@@ -1,0 +1,17 @@
+apply plugin: 'groovy'
+apply plugin: 'application'
+
+mainClassName = 'HelloWorld'
+
+tasks.withType(GroovyCompile) {
+    groovyOptions.optimizationOptions.indy = true
+}
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  compile 'org.codehaus.groovy:groovy-all:2.4.8:indy'
+}
+
