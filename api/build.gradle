@@ -1,7 +1,7 @@
 apply plugin: 'groovy'
 apply plugin: 'application'
 
-mainClassName = 'HelloWorld'
+mainClassName = 'tBackend.Main'
 
 tasks.withType(GroovyCompile) {
     groovyOptions.optimizationOptions.indy = true
@@ -9,9 +9,14 @@ tasks.withType(GroovyCompile) {
 
 repositories {
   mavenCentral()
+  maven {
+    url  "http://che.bintray.com/gstorm"
+  }
 }
 
 dependencies {
   compile 'org.codehaus.groovy:groovy-all:2.4.8:indy'
+  compile 'che.sooth-sayer.gstorm:gstorm:1.2'
+  compile 'org.postgresql:postgresql:9.4.1212'
 }
 
