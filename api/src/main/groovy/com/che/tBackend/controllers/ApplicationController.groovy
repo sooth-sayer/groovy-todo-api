@@ -20,10 +20,10 @@ class ApplicationController extends BaseController {
   }
 
   def isAuthorized() {
-    !!currentUser()
+    !!getCurrentUser()
   }
 
-  def currentUser() {
+  def getCurrentUser() {
     sessions[currentToken]
   }
 

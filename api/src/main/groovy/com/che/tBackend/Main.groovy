@@ -5,6 +5,7 @@ import tBackend.db.Orm
 import tBackend.models.*
 import tBackend.controllers.UsersController
 import tBackend.controllers.SessionsController
+import tBackend.controllers.TodoListsController
 
 import io.vertx.groovy.core.Vertx
 import io.vertx.core.http.HttpMethod
@@ -55,6 +56,21 @@ class Main {
       response.end()
     })
 
+    router.route(HttpMethod.POST, "/todolists").handler({ routingContext ->
+      def response = routingContext.response()
+      def handler = new TodoListsController(routingContext)
+      response.setChunked(true)
+      handler.post()
+      response.end()
+    })
+
+    router.route(HttpMethod.GET, "/todolists").handler({ routingContext ->
+      def response = routingContext.response()
+      def handler = new TodoListsController(routingContext)
+      response.setChunked(true)
+      handler.index()
+      response.end()
+    })
 
     def server = vertx.createHttpServer()
     server.requestHandler(router.&accept)

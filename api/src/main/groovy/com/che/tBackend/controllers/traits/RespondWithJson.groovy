@@ -1,11 +1,28 @@
 package tBackend.controllers.traits
 
-import groovy.json.JsonBuilder
+import groovy.extjson.JsonBuilder
+import groovy.extjson.JsonGenerator
+import tBackend.models.*
+import tBackend.lib.json.Converter
 
 trait RespondWithJson {
   def respondWith(body) {
-    def json = new JsonBuilder()
+    def json = new JsonBuilder(getGenerator())
     json body
-    super.respondWith(json.toString())
+    super.respondWith json.toString()
+  }
+
+  static def getGenerator() {
+    def generator = new JsonGenerator.Options()
+    getConverters().each { generator.addConverter it }
+    generator.build()
+  }
+
+  static def getConverters() {
+    [
+      new Converter(User.class),
+      new Converter(TodoList.class),
+      new Converter(Item.class)
+    ]
   }
 }

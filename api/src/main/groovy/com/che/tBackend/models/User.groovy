@@ -4,6 +4,7 @@ import tBackend.db.models.DbUser
 import tBackend.lib.Encryptor
 
 class User extends DbUser {
+
   TodoList[] getTodos() {
     TodoList.where("user_id = '$id'")
   }
@@ -11,7 +12,7 @@ class User extends DbUser {
   String password
   String password_confirmation
 
-  Map errors
+  Map errors = [:]
 
   // TODO: validators
   def validate() {
@@ -56,4 +57,5 @@ class User extends DbUser {
     password_encrypted = Encryptor.encrypt(password)
     super.save()
   }
+
 }
