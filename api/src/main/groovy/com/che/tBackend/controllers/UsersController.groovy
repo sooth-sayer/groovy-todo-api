@@ -1,36 +1,31 @@
 package tBackend.controllers
 
-import groovy.json.JsonBuilder
 import groovy.transform.InheritConstructors
 import tBackend.models.User
+import tBackend.controllers.traits.RespondWithJson
 
 @InheritConstructors
-class UsersController extends ApplicationController {
+class UsersController extends ApplicationController implements RespondWithJson {
   def post() {
     try {
       def params = permit()
       def user = new User(params)
 
       if (!user.validate()) {
-        def json = new JsonBuilder()
-        json.errors user.errors
         status(422)
-        respondWith json.toString()
+        respondWith errors: user.errors
+
         return
       }
 
       user.save()
-      def json = new JsonBuilder()
-      json id: user.id, email: user.email
-      respondWith json.toString()
+      respondWith id: user.id, email: user.email
 
     } catch (groovy.json.JsonException e) {
-      def json = new JsonBuilder()
-      json.errors {
+      status(422)
+      respondWith errors {
         other message: e.message
       }
-      status(422)
-      respondWith json.toString()
     }
   }
 
