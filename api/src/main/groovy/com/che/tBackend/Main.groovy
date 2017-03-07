@@ -3,6 +3,14 @@ import groovy.transform.CompileStatic
 
 import tBackend.db.Orm
 import tBackend.models.*
+import tBackend.controllers.UsersController
+import tBackend.controllers.SessionsController
+
+import io.vertx.groovy.core.Vertx
+import io.vertx.core.http.HttpMethod
+import io.vertx.groovy.ext.web.Router
+import io.vertx.groovy.ext.web.handler.BodyHandler
+
 
 // @CompileStatic
 class Main {
@@ -11,22 +19,46 @@ class Main {
     def db = new Orm()
     db.init()
 
+    def vertx = Vertx.vertx()
+    def router = Router.router(vertx)
+    router.route().handler(BodyHandler.create())
 
-    def u1 = new User(email: 'd.chernyatiev@gmail.com')
-    u1.save()
+    router.route(HttpMethod.GET, "/profile").handler({ routingContext ->
+      def response = routingContext.response()
+      def handler = new UsersController(routingContext)
+      response.setChunked(true)
+      handler.get()
+      response.end()
+    })
 
-    def list = new TodoList(name: 'Test list', user_id: u1.id)
-    list.save()
+    router.route(HttpMethod.POST, "/users").handler({ routingContext ->
+      def response = routingContext.response()
+      def handler = new UsersController(routingContext)
+      response.setChunked(true)
+      handler.post()
+      response.end()
+    })
 
-    def item1 = new Item(name: "First item", description: "Some first todo item", todolist_id: list.id)
-    def item2 = new Item(name: "Second item", description: "Some second item", todolist_id: list.id)
-    item1.save()
-    item2.save()
+    router.route(HttpMethod.POST, "/sessions").handler({ routingContext ->
+      def response = routingContext.response()
+      def handler = new SessionsController(routingContext)
+      response.setChunked(true)
+      handler.post()
+      response.end()
+    })
 
-    def u = new User(User.all()[0])
-    def items = u.todos[0].items.collect { it.description }
-    println items
+    router.route(HttpMethod.DELETE, "/sessions").handler({ routingContext ->
+      def response = routingContext.response()
+      def handler = new SessionsController(routingContext)
+      response.setChunked(true)
+      handler.delete()
+      response.end()
+    })
 
+
+    def server = vertx.createHttpServer()
+    server.requestHandler(router.&accept)
+    server.listen(8080)
   }
 }
 

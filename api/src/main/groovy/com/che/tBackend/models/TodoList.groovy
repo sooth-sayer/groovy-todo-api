@@ -1,15 +1,8 @@
 package tBackend.models
 
-import gstorm.Table
-import gstorm.Id
+import tBackend.db.models.DbTodoList
 
-@Table(value="TodoList", idDefinition="SERIAL PRIMARY KEY")
-class TodoList {
-  @Id
-  Integer id
-  String name
-  Integer user_id
-
+class TodoList extends DbTodoList {
   Item[] getItems() {
     Item.where("todolist_id = '$id'")
   }

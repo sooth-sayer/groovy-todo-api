@@ -2,7 +2,7 @@ package tBackend.db
 
 import groovy.sql.Sql
 import gstorm.Gstorm
-import tBackend.models.*
+import tBackend.db.models.*
 
 class Orm {
   private String url
@@ -26,8 +26,8 @@ class Orm {
     def sql = Sql.newInstance url, user, password, driver
     def g = new Gstorm(sql)
 
-    g.stormify User
-    g.stormify TodoList
-    g.stormify Item
+    g.stormify DbUser
+    g.stormify DbTodoList
+    g.stormify DbItem
   }
 }

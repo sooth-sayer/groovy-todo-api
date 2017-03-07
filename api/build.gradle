@@ -16,7 +16,10 @@ repositories {
 
 dependencies {
   compile 'org.codehaus.groovy:groovy-all:2.4.8:indy'
-  compile 'che.sooth-sayer.gstorm:gstorm:1.2'
+  compile 'che.sooth-sayer.gstorm:gstorm:1.4'
   compile 'org.postgresql:postgresql:9.4.1212'
+  compile "io.vertx:vertx-core:3.3.3"
+  compile 'io.vertx:vertx-web:3.3.3'
+  compile "io.vertx:vertx-lang-groovy:3.3.3"
 }
 
