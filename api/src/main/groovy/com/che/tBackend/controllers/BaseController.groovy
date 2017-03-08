@@ -24,6 +24,10 @@ class BaseController {
     context.getBodyAsString() withTraits AsJson
   }
 
+  def getParams() {
+    context.request().params()
+  }
+
   def respondWith(String content) {
     context.response().write(content)
   }

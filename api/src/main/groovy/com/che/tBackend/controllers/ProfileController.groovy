@@ -6,8 +6,4 @@ import tBackend.models.User
 
 @InheritConstructors
 class ProfileController extends ApplicationController {
-  def get() {
-    def user = User
-    respondWith("Test data to client!")
-  }
 }

@@ -6,6 +6,7 @@ import tBackend.models.*
 import tBackend.controllers.UsersController
 import tBackend.controllers.SessionsController
 import tBackend.controllers.TodoListsController
+import tBackend.controllers.ItemsController
 
 import io.vertx.groovy.core.Vertx
 import io.vertx.core.http.HttpMethod
@@ -69,6 +70,38 @@ class Main {
       def handler = new TodoListsController(routingContext)
       response.setChunked(true)
       handler.index()
+      response.end()
+    })
+
+    router.route(HttpMethod.GET, "/todolists/:todolist_id").handler({ routingContext ->
+      def response = routingContext.response()
+      def handler = new TodoListsController(routingContext)
+      response.setChunked(true)
+      handler.get()
+      response.end()
+    })
+
+    router.route(HttpMethod.GET, "/todolists/:todolist_id/items").handler({ routingContext ->
+      def response = routingContext.response()
+      def handler = new ItemsController(routingContext)
+      response.setChunked(true)
+      handler.index()
+      response.end()
+    })
+
+    router.route(HttpMethod.POST, "/todolists/:todolist_id/items").handler({ routingContext ->
+      def response = routingContext.response()
+      def handler = new ItemsController(routingContext)
+      response.setChunked(true)
+      handler.post()
+      response.end()
+    })
+
+    router.route(HttpMethod.GET, "/todolists/:todolist_id/items/:item_id").handler({ routingContext ->
+      def response = routingContext.response()
+      def handler = new ItemsController(routingContext)
+      response.setChunked(true)
+      handler.get()
       response.end()
     })
 

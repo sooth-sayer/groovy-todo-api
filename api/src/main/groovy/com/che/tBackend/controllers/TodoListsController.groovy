@@ -27,7 +27,7 @@ class TodoListsController extends ApplicationController implements RespondWithJs
       respondWith id: todoList.id, name: todoList.name
     } catch (groovy.json.JsonException e) {
       status(422)
-      respondWith errors {
+      respondWith errors: {
         other message: e.message
       }
     }
@@ -40,6 +40,25 @@ class TodoListsController extends ApplicationController implements RespondWithJs
     }
 
     respondWith currentUser.todos
+  }
+
+  def get() {
+    if (!isAuthorized()) {
+      status(403)
+      return
+    }
+
+    def todolistId = params.get("todolist_id") as Integer
+    def todoList = scurrentUser.todos.find { it.id == todolistId }
+    if (!todoList) {
+      status(404)
+      respondWith errors: {
+        other message: "Todolist is not exists"
+      }
+      return
+    }
+
+    respondWith todoList
   }
 
   def permit() {
