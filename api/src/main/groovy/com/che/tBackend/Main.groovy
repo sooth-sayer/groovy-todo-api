@@ -81,6 +81,14 @@ class Main {
       response.end()
     })
 
+    router.route(HttpMethod.DELETE, "/todolists/:todolist_id").handler({ routingContext ->
+      def response = routingContext.response()
+      def handler = new TodoListsController(routingContext)
+      response.setChunked(true)
+      handler.delete()
+      response.end()
+    })
+
     router.route(HttpMethod.GET, "/todolists/:todolist_id/items").handler({ routingContext ->
       def response = routingContext.response()
       def handler = new ItemsController(routingContext)
@@ -102,6 +110,14 @@ class Main {
       def handler = new ItemsController(routingContext)
       response.setChunked(true)
       handler.get()
+      response.end()
+    })
+
+    router.route(HttpMethod.DELETE, "/todolists/:todolist_id/items/:item_id").handler({ routingContext ->
+      def response = routingContext.response()
+      def handler = new ItemsController(routingContext)
+      response.setChunked(true)
+      handler.delete()
       response.end()
     })
 

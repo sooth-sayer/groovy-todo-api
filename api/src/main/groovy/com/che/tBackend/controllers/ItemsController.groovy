@@ -97,6 +97,35 @@ class ItemsController extends ApplicationController implements RespondWithJson {
     respondWith item
   }
 
+  def delete() {
+    if (!isAuthorized()) {
+      status(403)
+      return
+    }
+
+    def todolistId = params.get("todolist_id") as Integer
+    def todoList = currentUser.todos.find { it.id == todolistId }
+    if (!todoList) {
+      status(404)
+      respondWith errors: {
+        other message: "Todolist is not exists"
+      }
+      return
+    }
+
+    def itemId = params.get("item_id") as Integer
+    def item = todoList.items.find { it.id == itemId }
+    if (!item) {
+      status(404)
+      respondWith errors: {
+        other message: "Item is not exists"
+      }
+      return
+    }
+
+    item.delete()
+  }
+
   def permit() {
     def body = body.asJson()
     def user = [:]

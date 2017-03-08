@@ -49,7 +49,7 @@ class TodoListsController extends ApplicationController implements RespondWithJs
     }
 
     def todolistId = params.get("todolist_id") as Integer
-    def todoList = scurrentUser.todos.find { it.id == todolistId }
+    def todoList = currentUser.todos.find { it.id == todolistId }
     if (!todoList) {
       status(404)
       respondWith errors: {
@@ -59,6 +59,25 @@ class TodoListsController extends ApplicationController implements RespondWithJs
     }
 
     respondWith todoList
+  }
+
+  def delete() {
+    if (!isAuthorized()) {
+      status(403)
+      return
+    }
+
+    def todolistId = params.get("todolist_id") as Integer
+    def todoList = currentUser.todos.find { it.id == todolistId }
+    if (!todoList) {
+      status(404)
+      respondWith errors: {
+        other message: "Todolist is not exists"
+      }
+      return
+    }
+
+    todoList.delete()
   }
 
   def permit() {
