@@ -18,3 +18,7 @@ RUN for f in `ls lib/groovy*.jar | cut -d/ -f2`; \
   done
 
 WORKDIR /app
+
+EXPOSE 80
+
+CMD ["./gradlew", "run"]
