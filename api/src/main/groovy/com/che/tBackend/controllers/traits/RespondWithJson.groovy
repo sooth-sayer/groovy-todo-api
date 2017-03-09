@@ -7,8 +7,7 @@ import tBackend.lib.json.Converter
 
 trait RespondWithJson {
   def respondWith(body) {
-    def json = new JsonBuilder(getGenerator())
-    json body
+    def json = new JsonBuilder(body, getGenerator())
     super.respondWith json.toString()
   }
 
