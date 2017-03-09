@@ -33,6 +33,7 @@ class TodoListsController extends ApplicationController implements RespondWithJs
     }
 
     todoList.save()
+    status(201)
     respondWith id: todoList.id, name: todoList.name
   }
 

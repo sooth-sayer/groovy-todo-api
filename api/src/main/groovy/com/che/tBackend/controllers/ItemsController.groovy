@@ -49,6 +49,7 @@ class ItemsController extends ApplicationController implements RespondWithJson {
     }
 
     item.save()
+    status(201)
     respondWith id: item.id, name: item.name, description: item.description
   }
 

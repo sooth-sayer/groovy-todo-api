@@ -29,6 +29,7 @@ class SessionsController extends ApplicationController implements RespondWithJso
       }
     } else {
       def token = createTokenFor(user)
+      status(201)
       respondWith token: token
     }
   }

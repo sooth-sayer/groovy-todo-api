@@ -27,6 +27,7 @@ class UsersController extends ApplicationController implements RespondWithJson {
     }
 
     user.save()
+    status(201)
     respondWith id: user.id, email: user.email
   }
 
