@@ -13,12 +13,17 @@ import io.vertx.core.http.HttpMethod
 import io.vertx.groovy.ext.web.Router
 import io.vertx.groovy.ext.web.handler.BodyHandler
 
-
 // @CompileStatic
 class Main {
   static main(args) {
 
-    def db = new Orm()
+    def env = System.getenv()
+    def host = env['DB_HOST']
+    def user = env['DB_USER']
+    def password = env['DB_PASSWORD']
+    def url = "jdbc:postgresql://${host}:5432/postgres"
+
+    def db = new Orm(url, user, password)
     db.init()
 
     def vertx = Vertx.vertx()
