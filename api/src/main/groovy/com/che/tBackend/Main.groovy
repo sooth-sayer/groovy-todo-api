@@ -25,15 +25,7 @@ class Main {
     def router = Router.router(vertx)
     router.route().handler(BodyHandler.create())
 
-    router.route(HttpMethod.GET, "/profile").handler({ routingContext ->
-      def response = routingContext.response()
-      def handler = new UsersController(routingContext)
-      response.setChunked(true)
-      handler.get()
-      response.end()
-    })
-
-    router.route(HttpMethod.POST, "/users").handler({ routingContext ->
+    router.route(HttpMethod.POST, "/api/v1/users").handler({ routingContext ->
       def response = routingContext.response()
       def handler = new UsersController(routingContext)
       response.setChunked(true)
@@ -41,7 +33,7 @@ class Main {
       response.end()
     })
 
-    router.route(HttpMethod.POST, "/sessions").handler({ routingContext ->
+    router.route(HttpMethod.POST, "/api/v1/sessions").handler({ routingContext ->
       def response = routingContext.response()
       def handler = new SessionsController(routingContext)
       response.setChunked(true)
@@ -49,7 +41,7 @@ class Main {
       response.end()
     })
 
-    router.route(HttpMethod.DELETE, "/sessions").handler({ routingContext ->
+    router.route(HttpMethod.DELETE, "/api/v1/sessions").handler({ routingContext ->
       def response = routingContext.response()
       def handler = new SessionsController(routingContext)
       response.setChunked(true)
@@ -57,7 +49,7 @@ class Main {
       response.end()
     })
 
-    router.route(HttpMethod.POST, "/todolists").handler({ routingContext ->
+    router.route(HttpMethod.POST, "/api/v1/todolists").handler({ routingContext ->
       def response = routingContext.response()
       def handler = new TodoListsController(routingContext)
       response.setChunked(true)
@@ -65,7 +57,7 @@ class Main {
       response.end()
     })
 
-    router.route(HttpMethod.GET, "/todolists").handler({ routingContext ->
+    router.route(HttpMethod.GET, "/api/v1/todolists").handler({ routingContext ->
       def response = routingContext.response()
       def handler = new TodoListsController(routingContext)
       response.setChunked(true)
@@ -73,7 +65,7 @@ class Main {
       response.end()
     })
 
-    router.route(HttpMethod.GET, "/todolists/:todolist_id").handler({ routingContext ->
+    router.route(HttpMethod.GET, "/api/v1/todolists/:todolist_id").handler({ routingContext ->
       def response = routingContext.response()
       def handler = new TodoListsController(routingContext)
       response.setChunked(true)
@@ -81,7 +73,7 @@ class Main {
       response.end()
     })
 
-    router.route(HttpMethod.DELETE, "/todolists/:todolist_id").handler({ routingContext ->
+    router.route(HttpMethod.DELETE, "/api/v1/todolists/:todolist_id").handler({ routingContext ->
       def response = routingContext.response()
       def handler = new TodoListsController(routingContext)
       response.setChunked(true)
@@ -89,7 +81,7 @@ class Main {
       response.end()
     })
 
-    router.route(HttpMethod.GET, "/todolists/:todolist_id/items").handler({ routingContext ->
+    router.route(HttpMethod.GET, "/api/v1/todolists/:todolist_id/items").handler({ routingContext ->
       def response = routingContext.response()
       def handler = new ItemsController(routingContext)
       response.setChunked(true)
@@ -97,7 +89,7 @@ class Main {
       response.end()
     })
 
-    router.route(HttpMethod.POST, "/todolists/:todolist_id/items").handler({ routingContext ->
+    router.route(HttpMethod.POST, "/api/v1/todolists/:todolist_id/items").handler({ routingContext ->
       def response = routingContext.response()
       def handler = new ItemsController(routingContext)
       response.setChunked(true)
@@ -105,7 +97,7 @@ class Main {
       response.end()
     })
 
-    router.route(HttpMethod.GET, "/todolists/:todolist_id/items/:item_id").handler({ routingContext ->
+    router.route(HttpMethod.GET, "/api/v1/todolists/:todolist_id/items/:item_id").handler({ routingContext ->
       def response = routingContext.response()
       def handler = new ItemsController(routingContext)
       response.setChunked(true)
@@ -113,7 +105,7 @@ class Main {
       response.end()
     })
 
-    router.route(HttpMethod.DELETE, "/todolists/:todolist_id/items/:item_id").handler({ routingContext ->
+    router.route(HttpMethod.DELETE, "/api/v1/todolists/:todolist_id/items/:item_id").handler({ routingContext ->
       def response = routingContext.response()
       def handler = new ItemsController(routingContext)
       response.setChunked(true)
@@ -123,7 +115,7 @@ class Main {
 
     def server = vertx.createHttpServer()
     server.requestHandler(router.&accept)
-    server.listen(8080)
+    server.listen(80)
   }
 }
 
