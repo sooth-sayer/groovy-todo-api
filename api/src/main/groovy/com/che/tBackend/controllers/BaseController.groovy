@@ -1,8 +1,8 @@
 package tBackend.controllers
 
-import io.vertx.groovy.core.http.HttpServerRequest
-import io.vertx.groovy.core.http.HttpServerResponse
-import io.vertx.groovy.ext.web.RoutingContext
+import io.vertx.core.http.HttpServerRequest
+import io.vertx.core.http.HttpServerResponse
+import io.vertx.ext.web.RoutingContext
 import tBackend.lib.traits.AsJson
 
 class BaseController {

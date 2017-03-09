@@ -7,11 +7,13 @@ import tBackend.controllers.UsersController
 import tBackend.controllers.SessionsController
 import tBackend.controllers.TodoListsController
 import tBackend.controllers.ItemsController
+import tBackend.routing.JsonOnlyHandler
 
-import io.vertx.groovy.core.Vertx
+import io.vertx.core.Vertx
 import io.vertx.core.http.HttpMethod
-import io.vertx.groovy.ext.web.Router
-import io.vertx.groovy.ext.web.handler.BodyHandler
+import io.vertx.ext.web.Router
+import io.vertx.ext.web.handler.BodyHandler
+import io.vertx.ext.web.handler.ResponseContentTypeHandler
 
 // @CompileStatic
 class Main {
@@ -28,8 +30,10 @@ class Main {
     def vertx = Vertx.vertx()
     def router = Router.router(vertx)
     router.route().handler(BodyHandler.create())
+    router.route("/api/*").handler(ResponseContentTypeHandler.create())
+    router.route(HttpMethod.POST, "/api/*").handler(JsonOnlyHandler.create())
 
-    router.route(HttpMethod.POST, "/api/v1/users").handler({ routingContext ->
+    router.route(HttpMethod.POST, "/api/v1/users").produces("application/json").handler({ routingContext ->
       def response = routingContext.response()
       def handler = new UsersController(routingContext)
       response.setChunked(true)
@@ -37,7 +41,7 @@ class Main {
       response.end()
     })
 
-    router.route(HttpMethod.POST, "/api/v1/sessions").handler({ routingContext ->
+    router.route(HttpMethod.POST, "/api/v1/sessions").produces("application/json").handler({ routingContext ->
       def response = routingContext.response()
       def handler = new SessionsController(routingContext)
       response.setChunked(true)
@@ -53,7 +57,7 @@ class Main {
       response.end()
     })
 
-    router.route(HttpMethod.POST, "/api/v1/todolists").handler({ routingContext ->
+    router.route(HttpMethod.POST, "/api/v1/todolists").produces("application/json").handler({ routingContext ->
       def response = routingContext.response()
       def handler = new TodoListsController(routingContext)
       response.setChunked(true)
@@ -61,7 +65,7 @@ class Main {
       response.end()
     })
 
-    router.route(HttpMethod.GET, "/api/v1/todolists").handler({ routingContext ->
+    router.route(HttpMethod.GET, "/api/v1/todolists").produces("application/json").handler({ routingContext ->
       def response = routingContext.response()
       def handler = new TodoListsController(routingContext)
       response.setChunked(true)
@@ -69,7 +73,7 @@ class Main {
       response.end()
     })
 
-    router.route(HttpMethod.GET, "/api/v1/todolists/:todolist_id").handler({ routingContext ->
+    router.route(HttpMethod.GET, "/api/v1/todolists/:todolist_id").produces("application/json").handler({ routingContext ->
       def response = routingContext.response()
       def handler = new TodoListsController(routingContext)
       response.setChunked(true)
@@ -85,7 +89,7 @@ class Main {
       response.end()
     })
 
-    router.route(HttpMethod.GET, "/api/v1/todolists/:todolist_id/items").handler({ routingContext ->
+    router.route(HttpMethod.GET, "/api/v1/todolists/:todolist_id/items").produces("application/json").handler({ routingContext ->
       def response = routingContext.response()
       def handler = new ItemsController(routingContext)
       response.setChunked(true)
@@ -93,7 +97,7 @@ class Main {
       response.end()
     })
 
-    router.route(HttpMethod.POST, "/api/v1/todolists/:todolist_id/items").handler({ routingContext ->
+    router.route(HttpMethod.POST, "/api/v1/todolists/:todolist_id/items").produces("application/json").handler({ routingContext ->
       def response = routingContext.response()
       def handler = new ItemsController(routingContext)
       response.setChunked(true)
@@ -101,7 +105,7 @@ class Main {
       response.end()
     })
 
-    router.route(HttpMethod.GET, "/api/v1/todolists/:todolist_id/items/:item_id").handler({ routingContext ->
+    router.route(HttpMethod.GET, "/api/v1/todolists/:todolist_id/items/:item_id").produces("application/json").handler({ routingContext ->
       def response = routingContext.response()
       def handler = new ItemsController(routingContext)
       response.setChunked(true)
