@@ -8,7 +8,17 @@ import tBackend.controllers.traits.RespondWithJson
 @InheritConstructors
 class SessionsController extends ApplicationController implements RespondWithJson {
   def post() {
-    def params = permit()
+    def params
+    try {
+      params = permit()
+    } catch (e) {
+      status(422)
+      respondWith errors: {
+        other message: e.message
+      }
+      return
+    }
+
     def encryptedPassword = Encryptor.encrypt(params.password)
     def user = User.where("email = '${params.email}' and password_encrypted = '${encryptedPassword}'")[0] as User
 

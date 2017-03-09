@@ -7,26 +7,27 @@ import tBackend.controllers.traits.RespondWithJson
 @InheritConstructors
 class UsersController extends ApplicationController implements RespondWithJson {
   def post() {
+    def params
     try {
-      def params = permit()
-      def user = new User(params)
-
-      if (!user.validate()) {
-        status(422)
-        respondWith errors: user.errors
-
-        return
-      }
-
-      user.save()
-      respondWith id: user.id, email: user.email
-
-    } catch (groovy.json.JsonException e) {
+      params = permit()
+    } catch (e) {
       status(422)
-      respondWith errors {
+      respondWith errors: {
         other message: e.message
       }
+      return
     }
+
+    def user = new User(params)
+
+    if (!user.validate()) {
+      status(422)
+      respondWith errors: user.errors
+      return
+    }
+
+    user.save()
+    respondWith id: user.id, email: user.email
   }
 
   def permit() {

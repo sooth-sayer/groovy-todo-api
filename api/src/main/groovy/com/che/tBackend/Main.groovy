@@ -24,7 +24,6 @@ class Main {
     def url = "jdbc:postgresql://${host}:5432/postgres"
 
     def db = new Orm(url, user, password)
-    db.init()
 
     def vertx = Vertx.vertx()
     def router = Router.router(vertx)
@@ -120,7 +119,11 @@ class Main {
 
     def server = vertx.createHttpServer()
     server.requestHandler(router.&accept)
-    server.listen(80)
+    server.listen(80, { res ->
+      if (res.succeeded()) {
+        db.init()
+      }
+    })
   }
 }
 

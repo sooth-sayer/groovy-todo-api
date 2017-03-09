@@ -17,8 +17,18 @@ RUN for f in `ls lib/groovy*.jar | cut -d/ -f2`; \
     && cp indy/$k-indy.jar lib/$k.jar; \
   done
 
+
 WORKDIR /app
+ADD ./gradle gradle
+ADD ./src src
+ADD ./build.gradle build.gradle
+ADD ./gradlew gradlew
+ADD ./gradlew.bat gradlew.bat
+ADD ./settings.gradle settings.gradle
+
+ENV GRADLE_OPTS=-Dorg.gradle.daemon=false
+RUN ./gradlew installDist
 
 EXPOSE 80
 
-CMD ["./gradlew", "run"]
+CMD ["build/install/app/bin/./app"]

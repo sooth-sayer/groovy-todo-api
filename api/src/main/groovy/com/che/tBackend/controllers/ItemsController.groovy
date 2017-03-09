@@ -13,40 +13,43 @@ class ItemsController extends ApplicationController implements RespondWithJson {
       return
     }
 
+    if (!isAuthorized()) {
+      status(403)
+      return
+    }
+
+    def todolistId = params.get("todolist_id") as Integer
+    def todoList = currentUser.todos.find { it.id == todolistId }
+
+    if (!todoList) {
+      status(404)
+      respondWith errors: {
+        other message: "Todo list is not exists"
+      }
+      return
+    }
+
+    def itemParams
     try {
-      if (!isAuthorized()) {
-        status(403)
-        return
-      }
-
-      def todolistId = params.get("todolist_id") as Integer
-      def todoList = currentUser.todos.find { it.id == todolistId }
-
-      if (!todoList) {
-        status(404)
-        respondWith errors: {
-          other message: "Todo list is not exists"
-        }
-        return
-      }
-
-      def itemParams = permit()
-      itemParams.todolist_id = todolistId
-      def item = new Item(itemParams)
-
-      if (!item.validate()) {
-        status(422)
-        respondWith errors: item.errors
-      }
-
-      item.save()
-      respondWith id: item.id, name: item.name, description: item.description
-    } catch (groovy.json.JsonException e) {
+      itemParams = permit()
+    } catch (e) {
       status(422)
       respondWith errors: {
         other message: e.message
       }
+      return
     }
+
+    itemParams.todolist_id = todolistId
+    def item = new Item(itemParams)
+
+    if (!item.validate()) {
+      status(422)
+      respondWith errors: item.errors
+    }
+
+    item.save()
+    respondWith id: item.id, name: item.name, description: item.description
   }
 
   def index() {

@@ -13,24 +13,27 @@ class TodoListsController extends ApplicationController implements RespondWithJs
       return
     }
 
+    def params
     try {
-      def params = permit()
-      params.user_id = currentUser.id
-      def todoList = new TodoList(params)
-
-      if (!todoList.validate()) {
-        status(422)
-        respondWith errors: todoList.errors
-      }
-
-      todoList.save()
-      respondWith id: todoList.id, name: todoList.name
-    } catch (groovy.json.JsonException e) {
+      params = permit()
+    } catch (e) {
       status(422)
       respondWith errors: {
         other message: e.message
       }
+      return
     }
+
+    params.user_id = currentUser.id
+    def todoList = new TodoList(params)
+
+    if (!todoList.validate()) {
+      status(422)
+      respondWith errors: todoList.errors
+    }
+
+    todoList.save()
+    respondWith id: todoList.id, name: todoList.name
   }
 
   def index() {
