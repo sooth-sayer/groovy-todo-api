@@ -11,6 +11,8 @@ services:
       - api.env
     depends_on:
       - db
+    tty: true
+    command: "/bin/bash"
 
   db:
     build: ./db
